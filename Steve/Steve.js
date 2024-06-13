@@ -221,7 +221,7 @@ export default class Steve extends Sprite {
 
   *isblockS(typ, or) {
     this.vars.sIbt = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 2
     );
     if (this.toString(this.vars.sIbt) === "Y") {
@@ -431,7 +431,7 @@ export default class Steve extends Sprite {
     if (this.toString(mode) === "r") {
       this.vars.tact = this.itemOf(this.stage.vars.Level, idx - 1);
       this.vars.tact = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.tact) * this.toNumber(this.stage.vars.Dmul) + 9
       );
       if (!(this.toNumber(this.vars.tact) === 22)) {
@@ -470,12 +470,12 @@ export default class Steve extends Sprite {
       1;
     this.vars.tileS = this.itemOf(this.stage.vars.Level, this.vars.iS - 1);
     this.vars.sIbt = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(this.vars.tileS) * this.toNumber(this.stage.vars.Dmul) + 2
     );
     if (this.toString(this.vars.sIbt) === "Y") {
       this.vars.sIbt = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.tileS) * this.toNumber(this.stage.vars.Dmul) + 9
       );
       if (
@@ -612,7 +612,7 @@ export default class Steve extends Sprite {
           4 +
           this.toNumber(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.vars.iS) *
                 this.toNumber(this.stage.vars.Dmul) +
                 15
@@ -662,11 +662,11 @@ export default class Steve extends Sprite {
         this.vars.portaltime = 0;
       }
       this.vars.inwater = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.tileS) * this.toNumber(this.stage.vars.Dmul) + 6
       );
       this.vars.waterheight = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.tileS) * this.toNumber(this.stage.vars.Dmul) + 5
       );
       if (this.toNumber(this.vars.tileS) === 19) {
@@ -685,7 +685,7 @@ export default class Steve extends Sprite {
             this.toNumber(this.vars.iS) - 2
           );
           this.vars.refidxT = this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(this.vars.refidxT) *
               this.toNumber(this.stage.vars.Dmul) +
               6
@@ -698,7 +698,7 @@ export default class Steve extends Sprite {
               this.toNumber(this.vars.iS)
             );
             this.vars.refidxT = this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.vars.refidxT) *
                 this.toNumber(this.stage.vars.Dmul) +
                 6
@@ -756,7 +756,7 @@ export default class Steve extends Sprite {
           11 ===
           this.toNumber(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.vars.tileS) *
                 this.toNumber(this.stage.vars.Dmul) +
                 9
@@ -867,7 +867,7 @@ export default class Steve extends Sprite {
         } else {
           this.vars.tS = this.letterOf(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(tileid) * this.toNumber(this.stage.vars.Dmul) + 4
             ),
             0
@@ -892,7 +892,7 @@ export default class Steve extends Sprite {
   *canBreath(tile) {
     if (this.compare(this.stage.vars.Creative, 1) < 0) {
       this.vars.tS = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 6
       );
       if (
@@ -910,7 +910,7 @@ export default class Steve extends Sprite {
           11 ===
           this.toNumber(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 9
             )
           )
@@ -918,7 +918,7 @@ export default class Steve extends Sprite {
           this.vars.tS = "N";
         } else {
           this.vars.tS = this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 2
           );
         }
@@ -962,7 +962,7 @@ export default class Steve extends Sprite {
 
   *inLava(tile) {
     this.vars.tS = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(this.vars.tileS) * this.toNumber(this.stage.vars.Dmul) + 13
     );
     if (this.compare(this.vars.tS, 0) > 0) {
@@ -1097,9 +1097,9 @@ export default class Steve extends Sprite {
       (this.compare(this.stage.vars.Creative, 0) > 0 &&
         this.compare(this.stage.vars.HealthS, -10000) > 0)
     ) {
-      yield* this.stevetick();
+      this.runWithoutScreenRefresh(this.stevetick());
     } else {
-      yield* this.deathTickS();
+      this.runWithoutScreenRefresh(this.deathTickS());
     }
   }
 

@@ -147,7 +147,7 @@ export default class Armor extends Sprite {
           0 -
           this.toNumber(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.itemOf(this.stage.vars.Inv, this.vars.l - 1)) *
                 this.toNumber(this.stage.vars.Dmul) +
                 13

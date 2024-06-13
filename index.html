@@ -13,25 +13,49 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script type="importmap">
+      {
+        "imports": {
+          "https://unpkg.com/leopard@^1/dist/index.esm.js": "./leopard.js",
+          "leopard": "./leopard.js"
+        }
+      }
+    </script>
     <link
       rel="stylesheet"
-      href="https://unpkg.com/leopard@^1/dist/index.min.css"
+      href="style.css"
     />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js">
+    </script> 
+    <title>CardboardMC</title>
+    <link rel="icon" href="favicon.png"/>
   </head>
   <body>
-    <button id="greenFlag">Green Flag</button>
     <div id="project"></div>
 
     <script type="module">
       import project from "./index.js";
 
       project.attach("#project");
-
-      document.querySelector("#greenFlag").addEventListener("click", () => {
-        project.greenFlag();
-      });
-
-      // Autoplay
+      (window.onresize = ()=>{
+        let heightToWidth = 4/3;
+        let widthToHeight = 3/4;
+        // simple hack: you can convert the height and width to a square as an example in the edge case where the height and width exactly matches. so now we can directly compare them to see which direction we need to scale in
+        let swidth = window.innerWidth * widthToHeight;
+        // now square in the ideal case
+        let sheight = window.innerHeight;
+        let projectDiv = document.querySelector("#project");
+        if (swidth > sheight) {
+          projectDiv.style.height = "100vh";
+          projectDiv.style.width = `${(sheight / swidth) * 100}vw`;
+        } else if (swidth < sheight) {
+          projectDiv.style.height = `${(swidth / sheight) * 100}vh`;
+          projectDiv.style.width = "100vw";
+        } else {
+          // ideal case
+          // do nothing
+        }
+      })()
       project.greenFlag();
     </script>
   </body>

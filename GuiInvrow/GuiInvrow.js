@@ -101,9 +101,9 @@ export default class GuiInvrow extends Sprite {
       (this.compare(this.stage.vars.Creative, 0) > 0 &&
         this.compare(this.stage.vars.HealthS, -9999) > 0)
     ) {
-      yield* this.tick();
+      this.runWithoutScreenRefresh(this.tick());
     } else {
-      yield* this.deathTick();
+      this.runWithoutScreenRefresh(this.deathTick());
     }
   }
 
@@ -205,7 +205,7 @@ export default class GuiInvrow extends Sprite {
       if (this.toNumber(this.stage.vars.Mode) === 0) {
         this.stage.vars.Insideidx = 0;
         this.vars.t = this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(this.stage.vars.Undercursor) *
             this.toNumber(this.stage.vars.Dmul) +
             9
@@ -388,19 +388,19 @@ export default class GuiInvrow extends Sprite {
       yield;
     }
     this.vars.x2 = 10;
-    while (!(this.compare(this.vars.x2, this.vars.undefined.length) > 0)) {
+    while (!(this.compare(this.vars.x2, this.stage.vars.BlockData.length) > 0)) {
       if (
         this.compare(
           this.vars.match,
-          this.itemOf(this.vars.undefined, this.vars.x2 - 1)
+          this.itemOf(this.stage.vars.BlockData, this.vars.x2 - 1)
         ) === 0
       ) {
         this.vars.ix = this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(this.vars.x2) - 3
         );
         this.vars.x2 = this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(this.vars.x2) - 2
         );
         yield* this.getDurability(this.vars.ix);
@@ -648,7 +648,7 @@ export default class GuiInvrow extends Sprite {
       this.vars.match = this.toString(this.vars.match) + "  #";
     } else {
       this.vars.t = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 18
       );
       for (let i = 0; i < 3 - this.vars.t.length; i++) {
@@ -666,20 +666,20 @@ export default class GuiInvrow extends Sprite {
     this.costume = "Creative";
     this.vars.ix = this.toNumber(this.stage.vars.Dmul) + 15;
     this.vars.iIv = 81;
-    while (!(this.compare(this.vars.ix, this.vars.undefined.length) > 0)) {
+    while (!(this.compare(this.vars.ix, this.stage.vars.BlockData.length) > 0)) {
       if (
         this.compare(
           this.stage.vars.Creative,
-          this.itemOf(this.vars.undefined, this.vars.ix - 1)
+          this.itemOf(this.stage.vars.BlockData, this.vars.ix - 1)
         ) === 0
       ) {
         this.stage.vars.Inv.splice(
           this.vars.iIv - 1,
           1,
-          this.itemOf(this.vars.undefined, this.toNumber(this.vars.ix) - 15)
+          this.itemOf(this.stage.vars.BlockData, this.toNumber(this.vars.ix) - 15)
         );
         yield* this.getDurability(
-          this.itemOf(this.vars.undefined, this.toNumber(this.vars.ix) - 15)
+          this.itemOf(this.stage.vars.BlockData, this.toNumber(this.vars.ix) - 15)
         );
         if (this.compare(this.vars.durIv, 0) > 0) {
           this.stage.vars.Inv.splice(
@@ -706,10 +706,10 @@ export default class GuiInvrow extends Sprite {
 
   *jiggerCreativeTabs() {
     this.vars.iIv = 15;
-    while (!(this.compare(this.vars.iIv, this.vars.undefined.length) > 0)) {
-      this.vars.t = this.itemOf(this.vars.undefined, this.vars.iIv - 1);
+    while (!(this.compare(this.vars.iIv, this.stage.vars.BlockData.length) > 0)) {
+      this.vars.t = this.itemOf(this.stage.vars.BlockData, this.vars.iIv - 1);
       if (this.compare(this.vars.t, 2) > 0) {
-        this.vars.undefined.splice(
+        this.stage.vars.BlockData.splice(
           this.vars.iIv - 1,
           1,
           this.toNumber(this.vars.t) + 1
@@ -729,14 +729,14 @@ export default class GuiInvrow extends Sprite {
 
   *getStackLimit(tile) {
     this.vars.maxstack = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 17
     );
     if (this.compare(this.vars.maxstack, 0) > 0) {
       this.vars.maxstack = 1;
     } else {
       this.vars.maxstack = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 9
       );
       if (
@@ -752,7 +752,7 @@ export default class GuiInvrow extends Sprite {
 
   *getDurability(tileid) {
     this.vars.durIv = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(tileid) * this.toNumber(this.stage.vars.Dmul) + 17
     );
   }
@@ -821,7 +821,7 @@ export default class GuiInvrow extends Sprite {
       this.toNumber(this.vars.invidfrom) * 2 - 2
     );
     this.vars.y = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(this.vars.y2) * this.toNumber(this.stage.vars.Dmul) + 9
     );
     if (

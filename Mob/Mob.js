@@ -431,62 +431,62 @@ export default class Mob extends Sprite {
     if (this.compare(this.stage.vars.Sound, 0) > 0) {
       if (this.toNumber(mobtyp) === 1) {
         if (this.toNumber(soundtyp) === 1) {
-          yield* this.startSound(this.random(1, 3));
+          this.runWithoutScreenRefresh(this.startSound(this.random(1, 3)));
         } else {
-          yield* this.startSound(4 + 0);
+          this.runWithoutScreenRefresh(this.startSound(4 + 0));
         }
       } else {
         if (this.toNumber(mobtyp) === 2) {
           if (this.toNumber(soundtyp) === 1) {
-            yield* this.startSound(this.random(5, 7));
+            this.runWithoutScreenRefresh(this.startSound(this.random(5, 7)));
           } else {
-            yield* this.startSound(this.random(5, 7));
+            this.runWithoutScreenRefresh(this.startSound(this.random(5, 7)));
           }
         } else {
           if (this.toNumber(mobtyp) === 4) {
             if (this.toNumber(soundtyp) === 1) {
-              yield* this.startSound(this.random(8, 10));
+              this.runWithoutScreenRefresh(this.startSound(this.random(8, 10)));
             } else {
-              yield* this.startSound(this.random(11, 12));
+              this.runWithoutScreenRefresh(this.startSound(this.random(11, 12)));
             }
           } else {
             if (this.toNumber(mobtyp) === 3) {
               if (this.toNumber(soundtyp) === 1) {
-                yield* this.startSound(this.random(14, 17));
+                this.runWithoutScreenRefresh(this.startSound(this.random(14, 17)));
               } else {
-                yield* this.startSound(this.random(18, 20));
+                this.runWithoutScreenRefresh(this.startSound(this.random(18, 20)));
               }
             } else {
               if (this.toNumber(mobtyp) === 100) {
                 if (this.toNumber(soundtyp) === 1) {
-                  yield* this.startSound(this.random(21, 23));
+                  this.runWithoutScreenRefresh(this.startSound(this.random(21, 23)));
                 } else {
                   if (this.toNumber(soundtyp) === 2) {
-                    yield* this.startSound(this.random(24, 25));
+                    this.runWithoutScreenRefresh(this.startSound(this.random(24, 25)));
                   } else {
-                    yield* this.startSound(26 + 0);
+                    this.runWithoutScreenRefresh(this.startSound(26 + 0));
                   }
                 }
               } else {
                 if (this.toNumber(mobtyp) === 103) {
                   if (this.toNumber(soundtyp) === 1) {
-                    yield* this.startSound(this.random(27, 29));
+                    this.runWithoutScreenRefresh(this.startSound(this.random(27, 29)));
                   } else {
                     if (this.toNumber(soundtyp) === 2) {
-                      yield* this.startSound(this.random(30, 31));
+                      this.runWithoutScreenRefresh(this.startSound(this.random(30, 31)));
                     } else {
-                      yield* this.startSound(32 + 0);
+                      this.runWithoutScreenRefresh(this.startSound(32 + 0));
                     }
                   }
                 } else {
                   if (this.toNumber(mobtyp) === 102) {
                     if (this.toNumber(soundtyp) === 1) {
-                      yield* this.startSound(this.random(33, 36));
+                      this.runWithoutScreenRefresh(this.startSound(this.random(33, 36)));
                     } else {
                       if (this.toNumber(soundtyp) === 2) {
-                        yield* this.startSound(this.random(33, 36));
+                        this.runWithoutScreenRefresh(this.startSound(this.random(33, 36)));
                       } else {
-                        yield* this.startSound(37 + 0);
+                        this.runWithoutScreenRefresh(this.startSound(37 + 0));
                       }
                     }
                   } else {
@@ -538,8 +538,8 @@ export default class Mob extends Sprite {
     this.vars.cloneasid = 0;
     this.vars.lightP = 16;
     this.stage.vars.Spawnarea = 45;
-    yield* this.getmob100();
-    yield* this.reset();
+    this.runWithoutScreenRefresh(this.getmob100());
+    this.runWithoutScreenRefresh(this.reset());
     this.size = 25;
     this.visible = false;
   }
@@ -579,7 +579,7 @@ export default class Mob extends Sprite {
             ) /
               2)
       );
-      yield* this.getDirection(
+      this.runWithoutScreenRefresh(this.getDirection(
         this.toNumber(this.stage.vars.X) - this.toNumber(this.vars.x),
         this.toNumber(this.stage.vars.Y) +
           Math.abs(
@@ -587,7 +587,7 @@ export default class Mob extends Sprite {
           ) /
             4.000000000232831 -
           this.toNumber(this.vars.y)
-      );
+      ));
       this.vars.getDirection += this.random(-10, 10);
       this.stage.vars.Harvest.push(
         this.toNumber(this.vars.x) +
@@ -644,7 +644,7 @@ export default class Mob extends Sprite {
     if (this.toString(mode) === "r" && !force) {
       this.vars.tact = this.itemOf(this.stage.vars.Level, idx - 1);
       this.vars.tact = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.tact) * this.toNumber(this.stage.vars.Dmul) + 9
       );
       if (!(this.toNumber(this.vars.tact) === 22)) {
@@ -653,7 +653,7 @@ export default class Mob extends Sprite {
     }
     if (force || 0 === this.toNumber(this.vars.refidxIv)) {
       if (0 === this.toNumber(this.vars.refidxIv)) {
-        yield* this.getAvailableRefIndexIv();
+        this.runWithoutScreenRefresh(this.getAvailableRefIndexIv());
         this.stage.vars.Levelref.splice(idx - 1, 1, this.vars.refidxIv);
         this.stage.vars.Refdata.splice(
           this.toNumber(this.vars.refidxIv) + -1,
@@ -679,12 +679,12 @@ export default class Mob extends Sprite {
   *updateCostumePassive(root, walks, speed) {
     if (this.compare(this.vars.hurtingp, this.stage.vars.Timereal) < 0) {
       if (this.toNumber(this.vars.statep) === 0) {
-        yield* this.setCostume(root);
+        this.runWithoutScreenRefresh(this.setCostume(root));
       } else {
         if (this.toNumber(this.vars.statep) === 1) {
-          yield* this.setCostume(
+          this.runWithoutScreenRefresh(this.setCostume(
             this.toNumber(root) + Math.round(this.toNumber(walks) / 2)
-          );
+          ));
         } else {
           if (
             this.compare(
@@ -695,7 +695,7 @@ export default class Mob extends Sprite {
               this.stage.vars.Timereal
             ) > 0
           ) {
-            yield* this.setCostume(
+            this.runWithoutScreenRefresh(this.setCostume(
               this.toNumber(root) +
                 1 +
                 Math.abs(
@@ -704,9 +704,9 @@ export default class Mob extends Sprite {
                     (this.toNumber(walks) * 2 - 2)) -
                     (this.toNumber(walks) - 1)
                 )
-            );
+            ));
           } else {
-            yield* this.setCostume(
+            this.runWithoutScreenRefresh(this.setCostume(
               this.toNumber(root) +
                 1 +
                 Math.abs(
@@ -715,12 +715,12 @@ export default class Mob extends Sprite {
                     (this.toNumber(walks) * 2 - 2)) -
                     (this.toNumber(walks) - 1)
                 )
-            );
+            ));
           }
         }
       }
     } else {
-      yield* this.setCostume(this.toNumber(root) + (this.toNumber(walks) + 1));
+      this.runWithoutScreenRefresh(this.setCostume(this.toNumber(root) + (this.toNumber(walks) + 1)));
     }
   }
 
@@ -812,7 +812,7 @@ export default class Mob extends Sprite {
           this.stage.vars.Mob,
           this.toNumber(this.vars.cloneasid) + -1
         );
-        yield* this.getmobdataoffset(this.vars.typp);
+        this.runWithoutScreenRefresh(this.getmobdataoffset(this.vars.typp));
       }
       this.vars.x = Math.floor(
         (this.toNumber(
@@ -879,7 +879,7 @@ export default class Mob extends Sprite {
           this.compare(this.vars.y, this.y) === 0
         ) {
           this.visible = true;
-          yield* this.updateCostume();
+          this.runWithoutScreenRefresh(this.updateCostume());
         } else {
           this.visible = false;
         }
@@ -892,7 +892,7 @@ export default class Mob extends Sprite {
             1
           ) < 0
         ) {
-          yield* this.soundMob(this.vars.typp, 1);
+          this.runWithoutScreenRefresh(this.soundMob(this.vars.typp, 1));
         }
       }
     }
@@ -955,7 +955,7 @@ export default class Mob extends Sprite {
         )
       ) === 0
     ) {
-      yield* this.updateCostumePassive(
+      this.runWithoutScreenRefresh(this.updateCostumePassive(
         this.itemOf(
           this.stage.vars.MobData,
           this.toNumber(this.vars.mdoff) + 5
@@ -965,7 +965,7 @@ export default class Mob extends Sprite {
           this.toNumber(this.vars.mdoff) + 6
         ),
         this.itemOf(this.stage.vars.MobData, this.toNumber(this.vars.mdoff) + 7)
-      );
+      ));
     } else {
       this.vars.choice = this.itemOf(
         this.stage.vars.MobData,
@@ -979,29 +979,29 @@ export default class Mob extends Sprite {
         this.vars.choice += this.toNumber(this.vars.dist) + 1;
       }
       if (this.toNumber(this.vars.statep) === 0) {
-        yield* this.setCostume(0 + this.toNumber(this.vars.choice));
+        this.runWithoutScreenRefresh(this.setCostume(0 + this.toNumber(this.vars.choice)));
       } else {
         this.vars.choice++;
         if (this.toNumber(this.vars.statep) === 1) {
-          yield* this.setCostume(this.vars.choice);
+          this.runWithoutScreenRefresh(this.setCostume(this.vars.choice));
         } else {
           this.vars.dist--;
-          yield* this.setCostume(
+          this.runWithoutScreenRefresh(this.setCostume(
             this.toNumber(this.vars.choice) +
               Math.abs(
                 ((this.toNumber(this.stage.vars.Timereal) * 6) %
                   (this.toNumber(this.vars.dist) * 2)) -
                   this.toNumber(this.vars.dist)
               )
-          );
+          ));
         }
       }
     }
-    yield* this.getIlluminationPApply(
+    this.runWithoutScreenRefresh(this.getIlluminationPApply(
       this.itemOf(this.stage.vars.Mob, this.toNumber(this.vars.cloneasid) + 1),
       this.vars.lightP,
       !null
-    );
+    ));
   }
 
   *attack(typ) {
@@ -1021,7 +1021,7 @@ export default class Mob extends Sprite {
       );
       if (this.toNumber(typ) === 103) {
         if (this.compare(this.stage.vars.Timereal, this.vars.time) > 0) {
-          yield* this.shootAttack(typ);
+          this.runWithoutScreenRefresh(this.shootAttack(typ));
         }
       } else {
         if (this.toNumber(typ) === 101) {
@@ -1134,10 +1134,10 @@ export default class Mob extends Sprite {
                 this.stage.vars.Damagearmor++;
                 this.vars.dist++;
                 this.broadcast("Update Health");
-                yield* this.knockSteveBackP(
+                this.runWithoutScreenRefresh(this.knockSteveBackP(
                   this.compare(this.stage.vars.X, this.vars.x) < 0,
                   0.18
-                );
+                ));
               }
             }
           } else {
@@ -1222,7 +1222,7 @@ export default class Mob extends Sprite {
     );
     this.vars.lightP = -1;
     this.vars.ofyP = 0;
-    yield* this.getHalfHeight(this.vars.typp);
+    this.runWithoutScreenRefresh(this.getHalfHeight(this.vars.typp));
     this.size = this.toNumber(
       this.itemOf(this.stage.vars.MobData, this.toNumber(this.vars.mdoff) + 2)
     );
@@ -1261,10 +1261,10 @@ export default class Mob extends Sprite {
       this.toNumber(this.vars.cloneasid) + -1
     );
     if (this.compare(this.vars.healthp, 1) < 0) {
-      yield* this.deathHarvest(
+      this.runWithoutScreenRefresh(this.deathHarvest(
         this.vars.cloneasid,
         this.compare(this.vars.healthp, -20) < 0
-      );
+      ));
       this.stage.vars.Mob.splice(
         this.toNumber(this.vars.cloneasid) + 11,
         1,
@@ -1274,14 +1274,14 @@ export default class Mob extends Sprite {
         this.stage.vars.Mob,
         this.toNumber(this.vars.cloneasid) + -1
       );
-      yield* this.soundMob(this.vars.typp, 3);
+      this.runWithoutScreenRefresh(this.soundMob(this.vars.typp, 3));
     } else {
       this.stage.vars.Mob.splice(
         this.toNumber(this.vars.cloneasid) + 11,
         1,
         this.toNumber(this.stage.vars.Timereal) + 0.8
       );
-      yield* this.soundMob(this.vars.typp, 2);
+      this.runWithoutScreenRefresh(this.soundMob(this.vars.typp, 2));
     }
     this.stage.vars.Mob.splice(
       this.toNumber(this.vars.cloneasid) + 9,
@@ -1316,7 +1316,7 @@ export default class Mob extends Sprite {
         this.toNumber(this.vars.cloneasid) + 5
       );
       if (this.compare(this.vars.statep, 2) < 0) {
-        yield* this.decideNextMove(0, 0, 1);
+        this.runWithoutScreenRefresh(this.decideNextMove(0, 0, 1));
         this.vars.statep = this.itemOf(
           this.stage.vars.Mob,
           this.toNumber(this.vars.cloneasid) + 5
@@ -1344,7 +1344,7 @@ export default class Mob extends Sprite {
         this.toNumber(this.vars.typp) === 107 &&
         this.compare(this.vars.healthp, 0) > 0
       ) {
-        yield* this.findSpawnZone(0, !null, !null);
+        this.runWithoutScreenRefresh(this.findSpawnZone(0, !null, !null));
         if (this.compare(this.vars.tileidxp, 0) > 0) {
           this.stage.vars.Mob.splice(
             this.toNumber(this.vars.cloneasid) + 1,
@@ -1357,7 +1357,7 @@ export default class Mob extends Sprite {
             this.toNumber(this.vars.cloneasid) + 1
           );
         }
-        yield* this.getXYP(this.vars.tileidxp);
+        this.runWithoutScreenRefresh(this.getXYP(this.vars.tileidxp));
         this.vars.x += 0.5;
         this.vars.y += this.toNumber(this.vars.halfyP);
         this.stage.vars.Mob.splice(
@@ -1380,7 +1380,7 @@ export default class Mob extends Sprite {
   }
 
   *getHalfHeight(typ) {
-    yield* this.getmobdataoffset(typ);
+    this.runWithoutScreenRefresh(this.getmobdataoffset(typ));
     this.vars.halfyP = this.itemOf(
       this.stage.vars.MobData,
       this.toNumber(this.vars.mdoff) + 3
@@ -1389,7 +1389,7 @@ export default class Mob extends Sprite {
 
   *whenIReceiveAnimate() {
     if (this.compare(this.vars.id, 0) > 0) {
-      yield* this.drawMob();
+      this.runWithoutScreenRefresh(this.drawMob());
     } else {
       if (
         this.compare(this.stage.vars.Timereal, this.stage.vars.Nextspawn) > 0
@@ -1399,26 +1399,26 @@ export default class Mob extends Sprite {
             this.toNumber(this.stage.vars.Timereal) + 1;
           if (this.compare(this.random(1, 10), 7) > 0) {
             if (this.compare(this.random(1, 15), 1) > 0) {
-              yield* this.initialSpawn(this.random(1, 4));
+              this.runWithoutScreenRefresh(this.initialSpawn(this.random(1, 4)));
             } else {
-              yield* this.initialSpawn(5);
+              this.runWithoutScreenRefresh(this.initialSpawn(5));
             }
           } else {
             if (this.compare(this.stage.vars.Survival, 0) > 0) {
               this.vars.choice = this.random(1, 100);
               if (this.compare(this.vars.choice, 45) < 0) {
-                yield* this.initialSpawn(100);
+                this.runWithoutScreenRefresh(this.initialSpawn(100));
               } else {
                 if (this.compare(this.vars.choice, 65) < 0) {
-                  yield* this.initialSpawn(103);
+                  this.runWithoutScreenRefresh(this.initialSpawn(103));
                 } else {
                   if (this.compare(this.vars.choice, 78) < 0) {
-                    yield* this.initialSpawn(101);
+                    this.runWithoutScreenRefresh(this.initialSpawn(101));
                   } else {
                     if (this.compare(this.vars.choice, 92) < 0) {
-                      yield* this.initialSpawn(102);
+                      this.runWithoutScreenRefresh(this.initialSpawn(102));
                     } else {
-                      yield* this.initialSpawn(107);
+                      this.runWithoutScreenRefresh(this.initialSpawn(107));
                     }
                   }
                 }
@@ -1426,11 +1426,11 @@ export default class Mob extends Sprite {
             }
           }
         } else {
-          yield* this.initialSpawn(105);
+          this.runWithoutScreenRefresh(this.initialSpawn(105));
         }
       }
-      yield* this.checkMobSpawers();
-      yield* this.processMobs();
+      this.runWithoutScreenRefresh(this.checkMobSpawers());
+      this.runWithoutScreenRefresh(this.processMobs());
     }
   }
 
@@ -1455,14 +1455,14 @@ export default class Mob extends Sprite {
     if (this.compare(this.vars.id, 0) > 0) {
       this.deleteThisClone();
     } else {
-      yield* this.reset();
+      this.runWithoutScreenRefresh(this.reset());
     }
   }
 
   *spawnALoadOfMobs() {
     if (this.compare(this.stage.vars.Biomeid, 1000) < 0) {
       for (let i = 0; i < 4; i++) {
-        yield* this.initialSpawn(this.random(1, 4));
+        this.runWithoutScreenRefresh(this.initialSpawn(this.random(1, 4)));
         yield;
       }
     }
@@ -1483,7 +1483,7 @@ export default class Mob extends Sprite {
   }
 
   *processMob() {
-    yield* this.getHalfHeight(this.vars.typp);
+    this.runWithoutScreenRefresh(this.getHalfHeight(this.vars.typp));
     this.vars.x = this.itemOf(
       this.stage.vars.Mob,
       this.toNumber(this.vars.cloneasid) + 2
@@ -1539,7 +1539,7 @@ export default class Mob extends Sprite {
         0
       ) > 0
     ) {
-      yield* this.mobDamaged();
+      this.runWithoutScreenRefresh(this.mobDamaged());
     }
     if (this.compare(this.vars.healthp, 1) < 0) {
       this.stage.vars.Mob.splice(
@@ -1556,7 +1556,7 @@ export default class Mob extends Sprite {
           this.stage.vars.Timereal
         ) < 0
       ) {
-        yield* this.deleteMob(this.vars.cloneasid);
+        this.runWithoutScreenRefresh(this.deleteMob(this.vars.cloneasid));
         return;
       }
     }
@@ -1568,7 +1568,7 @@ export default class Mob extends Sprite {
       ) > 0
     ) {
       if (this.compare(this.vars.typp, 99) > 0) {
-        yield* this.deleteMob(this.vars.cloneasid);
+        this.runWithoutScreenRefresh(this.deleteMob(this.vars.cloneasid));
       }
     } else {
       if (
@@ -1583,7 +1583,7 @@ export default class Mob extends Sprite {
         ) < 0 &&
         this.random(1, 15) === 5
       ) {
-        yield* this.deleteMob(this.vars.cloneasid);
+        this.runWithoutScreenRefresh(this.deleteMob(this.vars.cloneasid));
       } else {
         if (
           0 ===
@@ -1621,7 +1621,7 @@ export default class Mob extends Sprite {
           }
         }
         if (this.compare(this.vars.healthp, 0) > 0) {
-          yield* this.movePig(this.vars.typp);
+          this.runWithoutScreenRefresh(this.movePig(this.vars.typp));
           if (
             this.compare(
               this.itemOf(
@@ -1631,9 +1631,9 @@ export default class Mob extends Sprite {
               0
             ) > 0
           ) {
-            yield* this.mobDamaged();
+            this.runWithoutScreenRefresh(this.mobDamaged());
           } else {
-            yield* this.attack(this.vars.typp);
+            this.runWithoutScreenRefresh(this.attack(this.vars.typp));
           }
         }
       }
@@ -1644,7 +1644,7 @@ export default class Mob extends Sprite {
     if (
       this.toString(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 2
         )
       ) === "Y"
@@ -1670,7 +1670,7 @@ export default class Mob extends Sprite {
       if (this.compare(this.vars.typp, 0) > 0) {
         this.stage.vars.mobcount++;
         for (let i = 0; i < this.toNumber(this.stage.vars.Ticks); i++) {
-          yield* this.processMob();
+          this.runWithoutScreenRefresh(this.processMob());
           yield;
         }
       } else {
@@ -1680,7 +1680,7 @@ export default class Mob extends Sprite {
             this.itemOf(this.stage.vars.Mob, this.toNumber(this.vars.cloneasid))
           ) === 0
         ) {
-          yield* this.addToMobPool(this.vars.cloneasid);
+          this.runWithoutScreenRefresh(this.addToMobPool(this.vars.cloneasid));
         }
       }
       this.vars.cloneasid += this.toNumber(this.stage.vars.Mobmul);
@@ -1721,7 +1721,7 @@ export default class Mob extends Sprite {
         this.compare(this.vars.y, this.vars.time) < 0 &&
         !(this.compare(this.vars.sy, 0) > 0)
       ) {
-        yield* this.decideNextMove(0, !null, typ);
+        this.runWithoutScreenRefresh(this.decideNextMove(0, !null, typ));
       }
     } else {
       this.vars.dirp = this.itemOf(
@@ -1822,7 +1822,7 @@ export default class Mob extends Sprite {
           this.stage.vars.Mob,
           this.toNumber(this.vars.cloneasid) + 1
         );
-        yield* this.isBlockP(
+        this.runWithoutScreenRefresh(this.isBlockP(
           this.itemOf(
             this.stage.vars.Level,
             this.toNumber(this.vars.tileidxp) -
@@ -1830,7 +1830,7 @@ export default class Mob extends Sprite {
               1
           ),
           0
-        );
+        ));
         if (
           this.compare(
             this.itemOf(
@@ -1840,7 +1840,7 @@ export default class Mob extends Sprite {
             this.stage.vars.Timereal
           ) < 0
         ) {
-          yield* this.decideNextMove(0, 0, typ);
+          this.runWithoutScreenRefresh(this.decideNextMove(0, 0, typ));
         } else {
           if (this.toNumber(this.vars.isblockp) === 0) {
             this.vars.inwaterp = this.itemOf(
@@ -1853,7 +1853,7 @@ export default class Mob extends Sprite {
                 this.toString(this.vars.inwaterp) === "D"
               )
             ) {
-              yield* this.decideNextMove(0, 0, typ);
+              this.runWithoutScreenRefresh(this.decideNextMove(0, 0, typ));
             }
           }
         }
@@ -1954,7 +1954,7 @@ export default class Mob extends Sprite {
           );
         }
         if (!(this.compare(this.vars.time, 0) > 0)) {
-          yield* this.decideNextMove(!null, 0, typ);
+          this.runWithoutScreenRefresh(this.decideNextMove(!null, 0, typ));
         }
       }
     }
@@ -1965,7 +1965,7 @@ export default class Mob extends Sprite {
       this.compare(this.vars.id, 1) < 0 &&
       0 === this.stage.vars.Mobspawn.length
     ) {
-      yield* this.spawnALoadOfMobs();
+      this.runWithoutScreenRefresh(this.spawnALoadOfMobs());
     }
   }
 
@@ -1986,12 +1986,12 @@ export default class Mob extends Sprite {
       }
     }
     this.vars.allegiance = 1;
-    yield* this.findSpawnZone(
+    this.runWithoutScreenRefresh(this.findSpawnZone(
       this.compare(typ, 100) < 0,
       this.compare(typ, 99) > 0,
       0
-    );
-    yield* this.spawnMobAtUserSpawnHome(typ, this.vars.tileidxp, 0, 0);
+    ));
+    this.runWithoutScreenRefresh(this.spawnMobAtUserSpawnHome(typ, this.vars.tileidxp, 0, 0));
   }
 
   *canSeeSteve(x, y, tileidx) {
@@ -2021,7 +2021,7 @@ export default class Mob extends Sprite {
       if (
         this.compare(
           this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(
               this.itemOf(this.stage.vars.Level, this.vars.tileidxp - 1)
             ) *
@@ -2034,7 +2034,7 @@ export default class Mob extends Sprite {
         if (
           this.toString(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(
                 this.itemOf(this.stage.vars.Level, this.vars.tileidxp - 1)
               ) *
@@ -2077,7 +2077,7 @@ export default class Mob extends Sprite {
           ) > 0 &&
           this.random(1, 3) === 1
         ) {
-          yield* this.findSpawnZone(!null, 0, 0);
+          this.runWithoutScreenRefresh(this.findSpawnZone(!null, 0, 0));
           if (this.compare(this.vars.tileidxp, 0) > 0) {
             this.stage.vars.Mob.splice(
               this.toNumber(this.vars.cloneasid) + 1,
@@ -2090,7 +2090,7 @@ export default class Mob extends Sprite {
               this.toNumber(this.vars.cloneasid) + 1
             );
           }
-          yield* this.getXYP(this.vars.tileidxp);
+          this.runWithoutScreenRefresh(this.getXYP(this.vars.tileidxp));
           this.stage.vars.Mob.splice(
             this.toNumber(this.vars.cloneasid) + 2,
             1,
@@ -2172,11 +2172,11 @@ export default class Mob extends Sprite {
               )
             ) === 0
           ) {
-            yield* this.canSeeSteve(
+            this.runWithoutScreenRefresh(this.canSeeSteve(
               this.vars.x,
               this.vars.y,
               this.vars.tileidxp
-            );
+            ));
             if (this.toNumber(this.vars.choice) === 99) {
               if (
                 this.compare(
@@ -2226,12 +2226,12 @@ export default class Mob extends Sprite {
         this.vars.idxP = this.itemOf(this.vars.mobpool, 0);
         this.vars.mobpool.splice(0, 1);
       } else {
-        yield* this.addNewMob();
+        this.runWithoutScreenRefresh(this.addNewMob());
       }
       this.stage.vars.Mob.splice(this.toNumber(this.vars.idxP) + -1, 1, typ);
-      yield* this.getHalfHeight(typ);
+      this.runWithoutScreenRefresh(this.getHalfHeight(typ));
       this.stage.vars.Mob.splice(this.toNumber(this.vars.idxP) + 1, 1, tileidx);
-      yield* this.getXYP(tileidx);
+      this.runWithoutScreenRefresh(this.getXYP(tileidx));
       this.stage.vars.Mob.splice(
         this.toNumber(this.vars.idxP) + 2,
         1,
@@ -2315,12 +2315,12 @@ export default class Mob extends Sprite {
 
   *checkMobSpawers() {
     while (!(0 === this.stage.vars.Mobspawn.length)) {
-      yield* this.spawnMobAtUserSpawnHome(
+      this.runWithoutScreenRefresh(this.spawnMobAtUserSpawnHome(
         this.itemOf(this.stage.vars.Mobspawn, 0),
         this.itemOf(this.stage.vars.Mobspawn, 1),
         this.itemOf(this.stage.vars.Mobspawn, 2),
         this.itemOf(this.stage.vars.Mobspawn, 3)
-      );
+      ));
       this.stage.vars.Mobspawn.splice(0, 1);
       this.stage.vars.Mobspawn.splice(0, 1);
       this.stage.vars.Mobspawn.splice(0, 1);
@@ -2341,14 +2341,14 @@ export default class Mob extends Sprite {
       } else {
         if (this.toNumber(this.vars.typp) === 3) {
           for (let i = 0; i < this.random(0, 2); i++) {
-            yield* this.dropItem(id, 163, 1);
+            this.runWithoutScreenRefresh(this.dropItem(id, 163, 1));
             yield;
           }
           this.vars.typp = 171;
           this.vars.isblockp = this.random(1, 3);
         } else {
           if (this.toNumber(this.vars.typp) === 4) {
-            yield* this.dropItem(id, 164, 1);
+            this.runWithoutScreenRefresh(this.dropItem(id, 164, 1));
             this.vars.typp = 167;
             this.vars.isblockp = this.random(0, 2);
           } else {
@@ -2366,7 +2366,7 @@ export default class Mob extends Sprite {
                 } else {
                   if (this.toNumber(this.vars.typp) === 103) {
                     for (let i = 0; i < this.random(0, 2); i++) {
-                      yield* this.dropItem(id, 194, 1);
+                      this.runWithoutScreenRefresh(this.dropItem(id, 194, 1));
                       yield;
                     }
                     this.vars.typp = 131;
@@ -2377,7 +2377,7 @@ export default class Mob extends Sprite {
                       this.toNumber(this.vars.typp) === 106
                     ) {
                       if (this.random(0, 10) === 1) {
-                        yield* this.dropItem(id, 84, 1);
+                        this.runWithoutScreenRefresh(this.dropItem(id, 84, 1));
                       }
                       this.vars.typp = 119;
                       this.vars.isblockp = this.random(0, 1);
@@ -2394,7 +2394,7 @@ export default class Mob extends Sprite {
     }
     if (this.compare(this.vars.isblockp, 0) > 0) {
       for (let i = 0; i < this.toNumber(this.vars.isblockp); i++) {
-        yield* this.dropItem(id, this.vars.typp, 1);
+        this.runWithoutScreenRefresh(this.dropItem(id, this.vars.typp, 1));
         yield;
       }
     }
@@ -2406,10 +2406,10 @@ export default class Mob extends Sprite {
       !(this.compare(this.vars.x, this.stage.vars.Lsx) < 0) ||
       this.compare(this.vars.y, 0) < 0
     ) {
-      yield* this.deleteMob(this.vars.cloneasid);
+      this.runWithoutScreenRefresh(this.deleteMob(this.vars.cloneasid));
       return;
     }
-    yield* this.getmobdataoffset(typ);
+    this.runWithoutScreenRefresh(this.getmobdataoffset(typ));
     this.vars.allegiance = this.itemOf(
       this.stage.vars.MobData,
       this.toNumber(this.vars.mdoff) + 10
@@ -2423,11 +2423,11 @@ export default class Mob extends Sprite {
       this.vars.tileidxp - 1
     );
     this.vars.inwaterp = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(this.vars.tilep) * this.toNumber(this.stage.vars.Dmul) + 6
     );
     this.vars.hurtingp = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(this.vars.tilep) * this.toNumber(this.stage.vars.Dmul) + 13
     );
     if (this.compare(this.vars.hurtingp, 0) > 0) {
@@ -2446,9 +2446,9 @@ export default class Mob extends Sprite {
       this.stage.vars.Level,
       this.toNumber(this.vars.tileidxp) - this.toNumber(this.stage.vars.Lsx) - 1
     );
-    yield* this.isBlockP(this.vars.choice, 0);
+    this.runWithoutScreenRefresh(this.isBlockP(this.vars.choice, 0));
     if (this.toNumber(this.vars.isblockp) === 0 && this.toNumber(typ) === 102) {
-      yield* this.isBlockP(
+      this.runWithoutScreenRefresh(this.isBlockP(
         this.itemOf(
           this.stage.vars.Level,
           this.toNumber(this.vars.tileidxp) +
@@ -2461,7 +2461,7 @@ export default class Mob extends Sprite {
             1
         ),
         0
-      );
+      ));
     }
     if (
       this.toNumber(this.vars.isblockp) === 0 &&
@@ -2590,11 +2590,11 @@ export default class Mob extends Sprite {
                   12
                 ) < 0
               ) {
-                yield* this.canSeeSteve(
+                this.runWithoutScreenRefresh(this.canSeeSteve(
                   this.vars.x,
                   this.vars.y,
                   this.vars.tileidxp
-                );
+                ));
                 if (this.toNumber(this.vars.choice) === 99) {
                   this.stage.vars.Mob.splice(
                     this.toNumber(this.vars.cloneasid) + 10,
@@ -2646,14 +2646,14 @@ export default class Mob extends Sprite {
         }
       } else {
         this.vars.choice = this.random(0, 9);
-        yield* this.followSteve(typ);
+        this.runWithoutScreenRefresh(this.followSteve(typ));
         if (this.toNumber(typ) === 7) {
           this.vars.tilep = this.itemOf(
             this.stage.vars.Level,
             this.vars.tileidxp - 1
           );
           if (this.toNumber(this.vars.tilep) === 57) {
-            yield* this.activateTileIv(this.vars.tileidxp, "o", !null, 0);
+            this.runWithoutScreenRefresh(this.activateTileIv(this.vars.tileidxp, "o", !null, 0));
             this.stage.vars.Refdata.splice(
               this.toNumber(this.vars.refidxIv) + 3,
               1,
@@ -2737,7 +2737,7 @@ export default class Mob extends Sprite {
             this.stage.vars.Mob,
             this.toNumber(this.vars.cloneasid) + 1
           );
-          yield* this.isBlockP(
+          this.runWithoutScreenRefresh(this.isBlockP(
             this.itemOf(
               this.stage.vars.Level,
               this.toNumber(this.vars.tileidxp) +
@@ -2745,7 +2745,7 @@ export default class Mob extends Sprite {
                 1
             ),
             0
-          );
+          ));
           if (this.compare(this.vars.halfyP, 0.5) > 0) {
             this.vars.tilep = this.itemOf(
               this.stage.vars.Level,
@@ -2754,27 +2754,27 @@ export default class Mob extends Sprite {
                 this.toNumber(this.stage.vars.Lsx) -
                 1
             );
-            yield* this.isBlockP(this.vars.tilep, !null);
+            this.runWithoutScreenRefresh(this.isBlockP(this.vars.tilep, !null));
             if (this.toNumber(typ) === 7) {
               if (this.toNumber(this.vars.tilep) === 120) {
-                yield* this.activateTileIv(
+                this.runWithoutScreenRefresh(this.activateTileIv(
                   this.toNumber(this.vars.tileidxp) +
                     this.toNumber(this.vars.dirp),
                   "t",
                   !null,
                   0
-                );
+                ));
                 this.vars.isblockp = 0;
               } else {
                 if (this.toNumber(this.vars.tilep) === 121) {
-                  yield* this.activateTileIv(
+                  this.runWithoutScreenRefresh(this.activateTileIv(
                     this.toNumber(this.vars.tileidxp) +
                       this.toNumber(this.vars.dirp) +
                       this.toNumber(this.stage.vars.Lsx),
                     "t",
                     !null,
                     0
-                  );
+                  ));
                   this.vars.isblockp = 99;
                 }
               }
@@ -2782,7 +2782,7 @@ export default class Mob extends Sprite {
           }
           if (this.toNumber(this.vars.isblockp) === 0) {
             if (this.compare(this.vars.choice, 99) < 0) {
-              yield* this.isBlockP(
+              this.runWithoutScreenRefresh(this.isBlockP(
                 this.itemOf(
                   this.stage.vars.Level,
                   this.toNumber(this.vars.tileidxp) -
@@ -2791,8 +2791,8 @@ export default class Mob extends Sprite {
                     1
                 ),
                 !null
-              );
-              yield* this.isBlockP(
+              ));
+              this.runWithoutScreenRefresh(this.isBlockP(
                 this.itemOf(
                   this.stage.vars.Level,
                   this.toNumber(this.vars.tileidxp) -
@@ -2802,12 +2802,12 @@ export default class Mob extends Sprite {
                     1
                 ),
                 !null
-              );
+              ));
               if (
                 this.toNumber(this.vars.isblockp) === 0 &&
                 this.compare(this.vars.choice, 99) < 0
               ) {
-                yield* this.isBlockP(
+                this.runWithoutScreenRefresh(this.isBlockP(
                   this.itemOf(
                     this.stage.vars.Level,
                     this.toNumber(this.vars.tileidxp) -
@@ -2816,7 +2816,7 @@ export default class Mob extends Sprite {
                       1
                   ),
                   !null
-                );
+                ));
                 if (
                   this.compare(this.vars.isblockp, 0) > 0 &&
                   this.compare(
@@ -2870,7 +2870,7 @@ export default class Mob extends Sprite {
             if (this.toNumber(this.vars.isblockp) === 99) {
               this.vars.isblockp = 0;
             } else {
-              yield* this.isBlockP(
+              this.runWithoutScreenRefresh(this.isBlockP(
                 this.itemOf(
                   this.stage.vars.Level,
                   this.toNumber(this.vars.tileidxp) +
@@ -2878,8 +2878,8 @@ export default class Mob extends Sprite {
                     1
                 ),
                 0
-              );
-              yield* this.isBlockP(
+              ));
+              this.runWithoutScreenRefresh(this.isBlockP(
                 this.itemOf(
                   this.stage.vars.Level,
                   this.toNumber(this.vars.tileidxp) +
@@ -2888,9 +2888,9 @@ export default class Mob extends Sprite {
                     1
                 ),
                 !null
-              );
+              ));
               if (this.compare(this.vars.halfyP, 0.5) > 0) {
-                yield* this.isBlockP(
+                this.runWithoutScreenRefresh(this.isBlockP(
                   this.itemOf(
                     this.stage.vars.Level,
                     this.toNumber(this.vars.tileidxp) +
@@ -2899,8 +2899,8 @@ export default class Mob extends Sprite {
                       1
                   ),
                   !null
-                );
-                yield* this.isBlockP(
+                ));
+                this.runWithoutScreenRefresh(this.isBlockP(
                   this.itemOf(
                     this.stage.vars.Level,
                     this.toNumber(this.vars.tileidxp) +
@@ -2910,7 +2910,7 @@ export default class Mob extends Sprite {
                       1
                   ),
                   !null
-                );
+                ));
               }
             }
             if (this.toNumber(this.vars.isblockp) === 0) {
@@ -2970,7 +2970,7 @@ export default class Mob extends Sprite {
                   0.22
                 );
                 if (this.toNumber(typ) === 102) {
-                  yield* this.isBlockP(
+                  this.runWithoutScreenRefresh(this.isBlockP(
                     this.itemOf(
                       this.stage.vars.Level,
                       this.toNumber(this.vars.tileidxp) +
@@ -2978,7 +2978,7 @@ export default class Mob extends Sprite {
                         1
                     ),
                     0
-                  );
+                  ));
                   if (this.toNumber(this.vars.isblockp) === 0) {
                     this.stage.vars.Mob.splice(
                       this.toNumber(this.vars.cloneasid) + 1,
@@ -3069,7 +3069,7 @@ export default class Mob extends Sprite {
             this.toNumber(this.stage.vars.Timereal) + this.random(200, 400)
           );
         } else {
-          yield* this.dropItem(this.vars.cloneasid, 166, 1);
+          this.runWithoutScreenRefresh(this.dropItem(this.vars.cloneasid, 166, 1));
           this.stage.vars.Mob.splice(
             this.toNumber(this.vars.cloneasid) + 13,
             1,
@@ -3087,12 +3087,12 @@ export default class Mob extends Sprite {
       this.toNumber(this.vars.tileidxp) - this.toNumber(this.stage.vars.Lsx) - 1
     );
     if (this.toNumber(this.vars.tilep) === 233) {
-      yield* this.activateTileIv(
+      this.runWithoutScreenRefresh(this.activateTileIv(
         this.toNumber(this.vars.tileidxp) - this.toNumber(this.stage.vars.Lsx),
         "r",
         0,
         0
-      );
+      ));
     }
   }
 
@@ -3161,10 +3161,10 @@ export default class Mob extends Sprite {
         this.vars.tileidxp - 1
       );
       this.vars.inwaterp = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.tilep) * this.toNumber(this.stage.vars.Dmul) + 6
       );
-      yield* this.isBlockP(this.vars.tilep, 0);
+      this.runWithoutScreenRefresh(this.isBlockP(this.vars.tilep, 0));
       if (
         this.compare(this.vars.isblockp, 0) > 0 ||
         this.toString(this.vars.inwaterp) === "." ||
@@ -3177,9 +3177,9 @@ export default class Mob extends Sprite {
           if (this.compare(this.vars.isblockp, 0) > 0) {
             this.vars.tileidxp += this.toNumber(this.stage.vars.Lsx);
           }
-          yield* this.getIlluminationPApply(this.vars.tileidxp, 0, 0);
+          this.runWithoutScreenRefresh(this.getIlluminationPApply(this.vars.tileidxp, 0, 0));
           if (teleport) {
-            yield* this.getXYP(this.vars.tileidxp);
+            this.runWithoutScreenRefresh(this.getXYP(this.vars.tileidxp));
             if (
               this.compare(
                 Math.abs(
@@ -3197,7 +3197,7 @@ export default class Mob extends Sprite {
                 this.toNumber(this.vars.tilep) === 2) ||
               (!islight && this.compare(this.vars.lightP, 7) < 0)
             ) {
-              yield* this.getXYP(this.vars.tileidxp);
+              this.runWithoutScreenRefresh(this.getXYP(this.vars.tileidxp));
               if (
                 this.toString(this.stage.vars.Mode) === "S" ||
                 this.compare(

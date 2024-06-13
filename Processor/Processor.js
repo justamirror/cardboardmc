@@ -148,7 +148,7 @@ export default class Processor extends Sprite {
         this.toNumber(this.vars.tPr) + 2
       );
       this.vars.isblockPr = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.t2) * this.toNumber(this.stage.vars.Dmul) + 12
       );
       if (
@@ -188,7 +188,7 @@ export default class Processor extends Sprite {
           1 ===
           this.toNumber(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.vars.t2) *
                 this.toNumber(this.stage.vars.Dmul) +
                 9
@@ -221,7 +221,7 @@ export default class Processor extends Sprite {
         this.toNumber(this.vars.tPr) + 4
       );
       this.vars.isblockPr = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.t2) * this.toNumber(this.stage.vars.Dmul) + 11
       );
       if (
@@ -514,8 +514,8 @@ export default class Processor extends Sprite {
       if (this.keyPressed("o")) {
         yield* this.broadcastAndWait("save game");
       }
-      yield* this.gametick(0);
-      yield* this.doDayNightCycle();
+      this.runWithoutScreenRefresh(this.gametick(0));
+      this.runWithoutScreenRefresh(this.doDayNightCycle());
       if (this.compare(this.stage.vars.X, 0.5) < 0) {
         yield* this.broadcastAndWait("save chunk");
         this.stage.vars.ChunkSeed += 2 - this.toNumber(this.stage.vars.Lsx);
@@ -724,7 +724,7 @@ export default class Processor extends Sprite {
           if (this.compare(this.vars.tPr, 0) > 0) {
             if (this.compare(this.vars.tPr, 6) < 0) {
               this.vars.t2 = this.itemOf(
-                this.vars.undefined,
+                this.stage.vars.BlockData,
                 this.toNumber(
                   this.itemOf(this.stage.vars.Level, this.vars.reftilePr - 1)
                 ) *
@@ -815,7 +815,7 @@ export default class Processor extends Sprite {
       10 ===
       this.toNumber(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 9
         )
       )
@@ -1059,7 +1059,7 @@ export default class Processor extends Sprite {
     if (
       this.compare(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 3
         ),
         0
@@ -1093,7 +1093,7 @@ export default class Processor extends Sprite {
           190 ===
           this.toNumber(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 18
             )
           )
@@ -1565,7 +1565,7 @@ export default class Processor extends Sprite {
       this.vars.reftilePr - 1
     );
     this.vars.tPr = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(this.vars.tilePr) * this.toNumber(this.stage.vars.Dmul) + 8
     );
     if (this.compare(this.vars.refidxPr, this.vars.reftilePr) > 0) {
@@ -1589,7 +1589,7 @@ export default class Processor extends Sprite {
     if (
       this.toString(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(this.vars.tilePr) *
             this.toNumber(this.stage.vars.Dmul) +
             2
@@ -1749,7 +1749,7 @@ export default class Processor extends Sprite {
     if (
       this.compare(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 3
         ),
         0
@@ -1758,7 +1758,7 @@ export default class Processor extends Sprite {
       if (
         this.toString(
           this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 7
           )
         ) === "Y"
@@ -1769,7 +1769,7 @@ export default class Processor extends Sprite {
       }
       this.vars.prTool = this.letterOf(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 4
         ),
         0
@@ -1777,7 +1777,7 @@ export default class Processor extends Sprite {
       if (
         this.toNumber(
           this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 9
           )
         ) === 20
@@ -1972,7 +1972,7 @@ export default class Processor extends Sprite {
       ) === 0
     ) {
       this.vars.t2 = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.t2) * this.toNumber(this.stage.vars.Dmul) + 9
       );
       if (
@@ -1983,7 +1983,7 @@ export default class Processor extends Sprite {
       }
     } else {
       this.vars.t2 = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.t2) * this.toNumber(this.stage.vars.Dmul) + 18
       );
       if (this.toNumber(this.vars.t2) === 190) {
@@ -2256,7 +2256,7 @@ export default class Processor extends Sprite {
       this.compare(this.vars.tilePr, 226) > 0
     ) {
       this.vars.depth = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.vars.tilePr) * this.toNumber(this.stage.vars.Dmul) +
           12
       );
@@ -2274,7 +2274,7 @@ export default class Processor extends Sprite {
             ) > 0
           ) {
             this.vars.depth = this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(
                 this.itemOf(
                   this.stage.vars.Level,
@@ -2441,7 +2441,7 @@ export default class Processor extends Sprite {
   *getLightFrom(refidx, reftile) {
     this.vars.tilePr = this.itemOf(this.stage.vars.Level, reftile - 1);
     this.vars.tPr = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(this.vars.tilePr) * this.toNumber(this.stage.vars.Dmul) + 8
     );
     if (this.compare(this.vars.tPr, 0) < 0) {
@@ -2460,15 +2460,15 @@ export default class Processor extends Sprite {
 
   *deleteContents(tileidx, harvestcontents) {
     this.warp(this.getInventoryIdxFor)(tileidx);
-    if (this.compare(this.vars.undefined, 0) > 0) {
-      this.vars.iiC = this.toNumber(this.vars.undefined) + 3;
+    if (this.compare(this.stage.vars.BlockData, 0) > 0) {
+      this.vars.iiC = this.toNumber(this.stage.vars.BlockData) + 3;
       for (
         let i = 0;
         i <
         this.toNumber(
           this.itemOf(
             this.stage.vars.Inside,
-            this.toNumber(this.vars.undefined)
+            this.toNumber(this.stage.vars.BlockData)
           )
         );
         i++
@@ -2487,15 +2487,15 @@ export default class Processor extends Sprite {
         this.stage.vars.Inside.splice(this.vars.iiC - 1, 1);
         this.stage.vars.Inside.splice(this.vars.iiC - 1, 1);
       }
-      this.stage.vars.Inside.splice(this.vars.undefined - 1, 1);
-      this.stage.vars.Inside.splice(this.vars.undefined - 1, 1);
-      this.stage.vars.Inside.splice(this.vars.undefined - 1, 1);
+      this.stage.vars.Inside.splice(this.stage.vars.BlockData - 1, 1);
+      this.stage.vars.Inside.splice(this.stage.vars.BlockData - 1, 1);
+      this.stage.vars.Inside.splice(this.stage.vars.BlockData - 1, 1);
     }
   }
 
   *getInventoryIdxFor(tileidx) {
     this.vars.data = 1;
-    this.vars.undefined = 0;
+    this.stage.vars.BlockData = 0;
     while (!(this.compare(this.vars.data, this.stage.vars.Inside.length) > 0)) {
       if (
         this.compare(
@@ -2503,7 +2503,7 @@ export default class Processor extends Sprite {
           this.itemOf(this.stage.vars.Inside, this.vars.data - 1)
         ) === 0
       ) {
-        this.vars.undefined = this.vars.data;
+        this.stage.vars.BlockData = this.vars.data;
         this.vars.data += 9999999;
       } else {
         this.vars.data +=
@@ -2577,7 +2577,7 @@ export default class Processor extends Sprite {
         if (
           this.compare(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.vars.tilePr) *
                 this.toNumber(this.stage.vars.Dmul) +
                 5
@@ -2719,7 +2719,7 @@ export default class Processor extends Sprite {
             }
           }
           this.vars.tPr = this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(this.vars.tilePr) *
               this.toNumber(this.stage.vars.Dmul) +
               9
@@ -2728,7 +2728,7 @@ export default class Processor extends Sprite {
             this.warp(this.addToGrow)(this.vars.reftilePr, 2);
           } else {
             this.vars.tPr = this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.vars.tilePr) *
                 this.toNumber(this.stage.vars.Dmul) +
                 7
@@ -2973,7 +2973,8 @@ export default class Processor extends Sprite {
   }
 
   *insertAssetAtUsing(idx, data) {
-    this.vars.sgFull = data;
+    this.vars.sgFull = data ?? 0;
+    if (!this.vars.sgFull) this.vars.sgFull = 0;
     this.vars.sgI = 1;
     this.warp(this.readNumber)();
     this.vars.sgFormat = this.vars.sgN;
@@ -3031,7 +3032,7 @@ export default class Processor extends Sprite {
         if (
           this.compare(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.vars.checktilePr) *
                 this.toNumber(this.stage.vars.Dmul) +
                 3
@@ -3042,7 +3043,7 @@ export default class Processor extends Sprite {
           if (
             this.toNumber(
               this.itemOf(
-                this.vars.undefined,
+                this.stage.vars.BlockData,
                 this.toNumber(this.vars.checktilePr) *
                   this.toNumber(this.stage.vars.Dmul) +
                   5
@@ -3172,7 +3173,7 @@ export default class Processor extends Sprite {
 
   *spawnMobFromEgg(tileid, tileidx) {
     this.vars.sgTile = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(tileid) * this.toNumber(this.stage.vars.Dmul) + 10
     );
     if (this.compare(this.vars.sgTile, 0) > 0) {
@@ -3270,11 +3271,11 @@ export default class Processor extends Sprite {
 
   *getWaterStats(tile) {
     this.vars.depth = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 5
     );
     this.vars.flowdir = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 6
     );
     if (this.compare(this.vars.depth, 0) > 0) {
@@ -3332,7 +3333,7 @@ export default class Processor extends Sprite {
         if (
           this.toString(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.vars.sgTile) *
                 this.toNumber(this.stage.vars.Dmul) +
                 19
@@ -3369,7 +3370,7 @@ export default class Processor extends Sprite {
 
   *replaceTile(tileidx, typ, activate, harvest) {
     this.vars.isblockPr = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(this.itemOf(this.stage.vars.Level, tileidx - 1)) *
         this.toNumber(this.stage.vars.Dmul) +
         3
@@ -3403,14 +3404,14 @@ export default class Processor extends Sprite {
     if (
       this.compare(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 4
         ).length,
         2
       ) < 0
     ) {
       this.vars.data = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 10
       );
       if (
@@ -3562,7 +3563,7 @@ export default class Processor extends Sprite {
       return;
     }
     this.vars.basetile = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(this.vars.tilePr) * this.toNumber(this.stage.vars.Dmul) + 18
     );
     if (this.toNumber(this.vars.basetile) === 55) {
@@ -3709,7 +3710,7 @@ export default class Processor extends Sprite {
     if (
       this.toNumber(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(this.vars.tilePr) *
             this.toNumber(this.stage.vars.Dmul) +
             9
@@ -3741,7 +3742,7 @@ export default class Processor extends Sprite {
     if (
       this.compare(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(this.vars.tilePr) *
             this.toNumber(this.stage.vars.Dmul) +
             5
@@ -3752,7 +3753,7 @@ export default class Processor extends Sprite {
       if (
         this.compare(
           this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(this.vars.tilePr) *
               this.toNumber(this.stage.vars.Dmul) +
               13
@@ -3785,7 +3786,7 @@ export default class Processor extends Sprite {
   *bonemeal(refidx, reftile) {
     this.vars.tilePr = this.itemOf(this.stage.vars.Level, reftile - 1);
     this.vars.depth = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(this.vars.tilePr) * this.toNumber(this.stage.vars.Dmul) + 18
     );
     if (
@@ -3837,7 +3838,7 @@ export default class Processor extends Sprite {
         !(
           this.toString(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(
                 this.itemOf(
                   this.stage.vars.Level,
@@ -3863,7 +3864,7 @@ export default class Processor extends Sprite {
           !(
             this.toString(
               this.itemOf(
-                this.vars.undefined,
+                this.stage.vars.BlockData,
                 this.toNumber(
                   this.itemOf(
                     this.stage.vars.Level,
@@ -3891,7 +3892,7 @@ export default class Processor extends Sprite {
         !(
           this.toString(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.vars.t2) *
                 this.toNumber(this.stage.vars.Dmul) +
                 2

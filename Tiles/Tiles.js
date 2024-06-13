@@ -14,7 +14,7 @@ export default class Tiles extends Sprite {
     super(...args);
 
     this.costumes = [
-      new Costume("#", "./Tiles/costumes/#.png", { x: 40, y: 40 }),
+      new Costume("#", "./Tiles/costumes/air.png", { x: 40, y: 40 }),
       new Costume("grass", "./Tiles/costumes/grass.png", { x: 40, y: 40 }),
       new Costume("soil", "./Tiles/costumes/soil.png", { x: 40, y: 40 }),
       new Costume("rock", "./Tiles/costumes/rock.png", { x: 40, y: 40 }),
@@ -898,7 +898,7 @@ export default class Tiles extends Sprite {
       new Trigger(
         Trigger.BROADCAST,
         { name: "rearrange gui" },
-        this.whenIReceiveRearrangeGui
+        function *() {this.runWithoutScreenRefresh(this.whenIReceiveRearrangeGui())}
       ),
       new Trigger(Trigger.BROADCAST, { name: "go" }, this.whenIReceiveGo),
       new Trigger(
@@ -962,20 +962,20 @@ export default class Tiles extends Sprite {
 
   *whenIReceiveAnimate() {
     if (this.compare(this.vars.iIi, 0) > 0) {
-      yield* this.updateInvBlocks();
+      this.runWithoutScreenRefresh(this.updateInvBlocks());
     } else {
       if (this.compare(this.vars.iT, -1) > 0) {
-        yield* this.draw();
+        this.runWithoutScreenRefresh(this.draw());
       } else {
         if (this.compare(this.vars.iT, -1) < 0) {
-          yield* this.processAndDrawItem();
+          this.runWithoutScreenRefresh(this.processAndDrawItem());
         } else {
-          yield* this.processHarvestList();
+          this.runWithoutScreenRefresh(this.processHarvestList());
           if (this.toNumber(this.stage.vars.Nextselid) === 0) {
-            yield* this.drawHeld(".");
+            this.runWithoutScreenRefresh(this.drawHeld("."));
           } else {
             if (!(this.letterOf(this.stage.vars.Mode, 0) === "x")) {
-              yield* this.changeSelection(this.stage.vars.Nextselid, 0);
+              this.runWithoutScreenRefresh(this.changeSelection(this.stage.vars.Nextselid, 0));
               this.stage.vars.Nextselid = 0;
             }
           }
@@ -1891,20 +1891,20 @@ export default class Tiles extends Sprite {
     }
     yield* this.setInvPosition(
       this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.GuiPos,
         this.toNumber(this.vars.offsetIi) +
           (this.toNumber(this.vars.iIi) * 4 - 1) -
           1
       ),
       this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.GuiPos,
         this.toNumber(this.vars.offsetIi) +
           (this.toNumber(this.vars.iIi) * 4 - 0) -
           1
       ),
       !null,
       this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.GuiPos,
         this.toNumber(this.vars.offsetIi) +
           (this.toNumber(this.vars.iIi) * 4 - 2) -
           1
@@ -2041,6 +2041,7 @@ export default class Tiles extends Sprite {
   }
 
   *whenIReceiveInit1b() {
+    if (this.parent) return;
     this.visible = false;
     this.vars.show = 0;
     this.stage.vars.Tooltipid = 0;

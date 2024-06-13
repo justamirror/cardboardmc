@@ -105,19 +105,19 @@ export default class Cursor extends Sprite {
 
   *addToHarvest(tileidx, typ) {
     this.vars.data2 = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 4
     );
     if (this.compare(this.vars.data2.length, 1) > 0) {
       this.vars.data = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.stage.vars.Heldc) *
           this.toNumber(this.stage.vars.Dmul) +
           9
       );
       if (this.toNumber(this.vars.data) === 1) {
         this.vars.data = this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(this.stage.vars.Heldc) *
             this.toNumber(this.stage.vars.Dmul) +
             4
@@ -148,7 +148,7 @@ export default class Cursor extends Sprite {
 
   *isblockC(typ, or, excludedigthrough) {
     this.vars.data = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 3
     );
     if (
@@ -227,7 +227,7 @@ export default class Cursor extends Sprite {
         yield* this.isblockC(this.vars.tileC, 0, !null);
         if (this.compare(this.vars.isblockC, 0) > 0) {
           this.vars.data = this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(this.vars.tileC) *
               this.toNumber(this.stage.vars.Dmul) +
               2
@@ -499,7 +499,7 @@ export default class Cursor extends Sprite {
               yield* this.plantSeeds(this.vars.iC, this.vars.tileC);
             }
             this.vars.data2 = this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.stage.vars.Heldc) *
                 this.toNumber(this.stage.vars.Dmul) +
                 4
@@ -652,7 +652,7 @@ export default class Cursor extends Sprite {
   }
 
   *whenIReceiveAnimate() {
-    yield* this.animate();
+    this.runWithoutScreenRefresh(this.animate());
   }
 
   *addToLightMod(tileidx) {
@@ -754,7 +754,7 @@ export default class Cursor extends Sprite {
   *damageTool(tile) {
     if (this.compare(this.stage.vars.Creative, 1) < 0) {
       this.vars.data = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.stage.vars.Heldc) *
           this.toNumber(this.stage.vars.Dmul) +
           9
@@ -831,14 +831,14 @@ export default class Cursor extends Sprite {
       ) < 0
     ) {
       this.vars.data = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.stage.vars.Heldc) *
           this.toNumber(this.stage.vars.Dmul) +
           9
       );
       if (this.toNumber(this.vars.data) === 1) {
         this.vars.data = this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(this.stage.vars.Heldc) *
             this.toNumber(this.stage.vars.Dmul) +
             13
@@ -867,7 +867,7 @@ export default class Cursor extends Sprite {
 
   *addToHarvestNow(tileidx, typ, count) {
     this.vars.data = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(typ) * this.toNumber(this.stage.vars.Dmul) + 10
     );
     if (
@@ -1419,7 +1419,7 @@ export default class Cursor extends Sprite {
 
   *getDigSpeed(tile) {
     this.vars.digend = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 3
     );
     if (this.compare(this.stage.vars.Creative, 1) < 0) {
@@ -1427,17 +1427,17 @@ export default class Cursor extends Sprite {
         this.vars.digend = 0.001;
       }
       this.vars.data = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.stage.vars.Heldc) *
           this.toNumber(this.stage.vars.Dmul) +
           9
       );
       this.vars.data2 = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(tile) * this.toNumber(this.stage.vars.Dmul) + 4
       );
       this.vars.data3 = this.itemOf(
-        this.vars.undefined,
+        this.stage.vars.BlockData,
         this.toNumber(this.stage.vars.Heldc) *
           this.toNumber(this.stage.vars.Dmul) +
           4
@@ -1509,7 +1509,7 @@ export default class Cursor extends Sprite {
                 11 ===
                   this.toNumber(
                     this.itemOf(
-                      this.vars.undefined,
+                      this.stage.vars.BlockData,
                       this.toNumber(this.vars.tileC) *
                         this.toNumber(this.stage.vars.Dmul) +
                         9
@@ -1705,7 +1705,7 @@ export default class Cursor extends Sprite {
       this.toString(tileid) === "#" ||
       this.compare(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(tileid) * this.toNumber(this.stage.vars.Dmul) + 9
         ),
         2
@@ -1716,7 +1716,7 @@ export default class Cursor extends Sprite {
     if (
       this.compare(
         this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(tileid) * this.toNumber(this.stage.vars.Dmul) + 17
         ),
         0
@@ -1741,7 +1741,7 @@ export default class Cursor extends Sprite {
       if (
         this.toString(
           this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(tileid) * this.toNumber(this.stage.vars.Dmul) + 2
           )
         ) === "Y"

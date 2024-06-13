@@ -1,8 +1,134 @@
 import {
   Project,
   Sprite,
+  Trigger,
+  Costume,
+  Color
 } from "https://unpkg.com/leopard@^1/dist/index.esm.js";
+function overridePrototype(class_, property, fn) {
+  let proto = class_.prototype;
+  let original = proto[property];
+  proto[property] = function (...args) {
+    return fn.call(this, original ? original.bind(this) : null, ...args)
+  }
+}
+function override(object, property, fn) {
+  let original = object[property]
+  if (original) {
+    original = original.bind(object)
+  }
+  object[property] = function (...args) {
+    return fn.call(object, original ?? null, ...args)
+  }
+}
+let __onStepCallbacks = []
+overridePrototype(Project, 'onStep', function (_, fn) {
+  __onStepCallbacks.push(fn)
+  return fn
+});
+overridePrototype(Project, 'offStep', function (_, fn) {
+  __onStepCallbacks.splice(__onStepCallbacks.indexOf(fn), 1);
+  return fn
+})
+overridePrototype(Project, 'onStepOnce', function (_, fn) {
+  let cb = this.onStep(function (...args) {
+    this.offStep(cb);
+    fn(...args)
+  })
+});
+overridePrototype(Project, 'step', function (step, ...args) {
+  __onStepCallbacks.forEach(fn => fn(...args));
+  return step(...args)
+})
+/* overridePrototype(Trigger, 'start', function (original, target) {
+  if (this.trigger !== Trigger.BROADCAST || this.options.name.toLowerCase() !== 'rearrange gui') return original(target);
+  console.log(Error(`${target.constructor.name} recieved broadcast ${this.options.name}`));
+  return original(target);
+}) */
+let textCostumeCache = Object.create(null);
+let textCanvas = document.createElement('canvas');
+let textContext = textCanvas.getContext('2d');
+overridePrototype(Sprite, 'text', function (_, text, size=50, color="white", font="Minecraft") {
+  // set costume to on the spot generated costume object corrisponding to the text options
+  if (color instanceof Color) {
+    color = color.toRGBString(true)
+  }
+  let key = `${text}|${size}|${color}|${font}`;
+  if (!textCostumeCache[key]) {
+    // costumes are made using a name, url, and a center point
+    // calcuate center
+    textContext.font = `${size}px "${font}"`;
+    let textStats = textContext.measureText(text);
+    textCanvas.height = size * 2; // JUST IN CASE
+    textCanvas.width = textStats.width;
+    console.log(textCanvas, color)
+    textContext.font = `${size}px "${font}"`;
+    console.log(textContext.font)
+    textContext.fillStyle = color;
+    textContext.fillText(text, -textStats.actualBoundingBoxLeft, size);
+    // convert to dataURL
+    let dataURL = textCanvas.toDataURL();
+    textCostumeCache[key] = new Costume("text-"+key, dataURL, {
+      x: textStats.width / 2,
+      y: size / 2
+    })
+  }
+  if (!(this.costumes.find(costume => costume.name === "text-"+key))) this.costumes.push(textCostumeCache[key]);
+  return "text-"+key;
+});
+overridePrototype(Sprite, 'drawText', function (_, text, size=50, color="white", font="Minecraft") {
+  let oldCost = this.costume;
+  this.costume = this.text(text, size, color, font);
+  this.stamp();
+  this.costume = oldCost;
+})
+overridePrototype(Project, 'fireTrigger', function (_, e, i) {
+  if (e === Trigger.GREEN_FLAG) {
+      this.restartTimer(),
+      this.stopAllSounds(),
+      this.runningTriggers = [];
+      for (const t in this.sprites) {
+          this.sprites[t].clones = []
+      }
+      for (const t of this.spritesAndStage)
+          t.effects.clear(),
+          t.audioEffects.clear()
+  }
+  const s = this._matchingTriggers(((t,s)=>t.matches(e, i, s)));
+  if (i?.name) console.log(i.name, "was received by", s)
+  return this._startTriggers(s)
+})
+overridePrototype(Sprite, 'runWithoutScreenRefresh', function (original, generator) { // original is undefined because this is an original function
+  for (let _ of generator) {}
+  // leopard uses generators to emulate scratches async code running, so this prevents the yields from reaching leopards event loop and allowing it to continue.
+});
+overridePrototype(Sprite, '_getSkin', (original, t) => {
+  try {
+    return original(t);
+  } catch (e) {
+    console.error(this.constructor.name, 'getSkin', t, e)
+  }
+});
+overridePrototype(Sprite, 'broadcast', function (broadcast, name) {
+  console.log(`${this.constructor.name} broadcast ${name}`)
+  return broadcast(name)
+});
+overridePrototype(Sprite, 'letterOf', function (original, text) {
+  return original((text ?? '').toString());
+});
+overridePrototype(Trigger, 'matches', function (triggerMatches, trigger, options, target) {
+  if (this.trigger !== Trigger.BROADCAST) return triggerMatches(trigger, options, target);
+  if (this.trigger !== trigger) return false;
+  for (const option in options) {
+    if (option === 'name') {
+      if (this.option(option, target).toString().toLowerCase() !== options[option].toString().toLowerCase()) return false
+      continue
+    }
+    if (this.option(option, target) !== options[option]) return false;
+  }
 
+  return true;
+})
 import Stage from "./Stage/Stage.js";
 import Blank from "./Blank/Blank.js";
 import Generator from "./Generator/Generator.js";
@@ -33,7 +159,6 @@ import Commands from "./Commands/Commands.js";
 import PseudorandomCycle from "./PseudorandomCycle/PseudorandomCycle.js";
 import StageSprite from "./StageSprite/StageSprite.js";
 import Snow from "./Snow/Snow.js";
-
 const stage = new Stage({ costumeNumber: 1 });
 
 const sprites = {
@@ -332,4 +457,31 @@ const sprites = {
 const project = new Project(stage, sprites, {
   frameRate: 30, // Set to 60 to make your project run faster
 });
+/* overridePrototype(project.renderer, 'createStage', function (original, w, h) {
+  const stage = document.createElement("canvas");
+  stage.width = w;
+  stage.height = h;
+
+  // Size canvas to parent container
+  stage.style.width = stage.style.height = "100%";
+
+  // If the container width is a non-integer size, don't blur the canvas.
+  // Chrome:
+  stage.style.imageRendering = "pixelated";
+  // Firefox:
+  stage.style.imageRendering = "crisp-edges";
+  // Safari + Opera:
+  stage.style.imageRendering = "-webkit-optimize-contrast";
+
+  return stage;
+}) */
+window.project = project;
+override(project.renderer, '_getSkin', function (original, t) {
+  try {
+    return original(t);
+  } catch (e) {
+    // try again which works usually for some reason
+    return original(t);
+  }
+})
 export default project;

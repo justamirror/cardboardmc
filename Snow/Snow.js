@@ -65,7 +65,7 @@ export default class Snow extends Sprite {
       ) {
         this.vars.weatherType = 1;
         this.vars.weatherTime = this.stage.vars.Time;
-        yield* this.setWeatherCostume(1);
+        this.runWithoutScreenRefresh(this.setWeatherCostume(1));
       }
     } else {
       if (this.toNumber(this.stage.vars.Biomeid) === 4) {
@@ -80,10 +80,10 @@ export default class Snow extends Sprite {
           ) {
             if (this.random(1, 4) === 1) {
               this.vars.weatherType = 1;
-              yield* this.setWeatherCostume(1);
+              this.runWithoutScreenRefresh(this.setWeatherCostume(1));
             } else {
               this.vars.weatherType = 3;
-              yield* this.setWeatherCostume(2);
+              this.runWithoutScreenRefresh(this.setWeatherCostume(2));
             }
           } else {
             this.vars.weatherType = 0;

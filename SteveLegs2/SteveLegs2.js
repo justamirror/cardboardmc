@@ -115,7 +115,7 @@ export default class SteveLegs2 extends Sprite {
         2 +
         this.toNumber(
           this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(this.vars.offset) *
               this.toNumber(this.stage.vars.Dmul) +
               15
@@ -127,7 +127,7 @@ export default class SteveLegs2 extends Sprite {
 
   *whenIReceiveAnimate() {
     if (this.compare(this.stage.vars.HealthS, 0) > 0) {
-      yield* this.slPosition(this.stage.vars.X, this.stage.vars.Y);
+      this.runWithoutScreenRefresh(this.slPosition(this.stage.vars.X, this.stage.vars.Y));
     } else {
       this.visible = false;
     }

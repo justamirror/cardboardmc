@@ -517,7 +517,7 @@ export default class Generator extends Sprite {
         this.compare(this.vars.t, 1) > 0 &&
         this.toString(
           this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(this.vars.t) * this.toNumber(this.stage.vars.Dmul) + 2
           )
         ) === "Y" &&
@@ -1621,11 +1621,11 @@ export default class Generator extends Sprite {
     this.vars.rand = [];
     this.stage.vars.Random = [];
     yield* this.broadcastAndWait("Fill Random");
-    yield* this.init(0);
-    yield* this.storeOriginal();
+    this.runWithoutScreenRefresh(this.init(0));
+    this.runWithoutScreenRefresh(this.storeOriginal());
     if (this.compare(this.stage.vars.ChunkSeed, 0) > 0) {
-      yield* this.addDungeons();
-      yield* this.spawnVillage();
+      this.runWithoutScreenRefresh(this.addDungeons());
+      this.runWithoutScreenRefresh(this.spawnVillage());
     }
     this.stage.vars.Random = [];
     this.vars.altitude = [];
@@ -1670,7 +1670,7 @@ export default class Generator extends Sprite {
     this.stage.vars.Random = [];
     yield* this.broadcastAndWait("Fill Random");
     this.stage.vars.Randidx = 1;
-    yield* this.init(!null);
+    this.runWithoutScreenRefresh(this.init(!null));
     yield* this.storeOriginal();
     if (newChunk) {
       yield* this.addDungeons();
@@ -1740,7 +1740,7 @@ export default class Generator extends Sprite {
             !(
               this.toString(
                 this.itemOf(
-                  this.vars.undefined,
+                  this.stage.vars.BlockData,
                   this.toNumber(this.vars.t) *
                     this.toNumber(this.stage.vars.Dmul) +
                     2

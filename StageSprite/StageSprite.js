@@ -40,18 +40,9 @@ export default class StageSprite extends Sprite {
         "./StageSprite/costumes/Spl1b-Load Game.svg",
         { x: 86.86000000000001, y: 17.629999999999995 }
       ),
-      new Costume(
-        "Spl1b-Example Worlds",
-        "./StageSprite/costumes/Spl1b-Example Worlds.svg",
-        { x: 86.86000000000001, y: 17.629999999999995 }
-      ),
-      new Costume("Spl1b-Help", "./StageSprite/costumes/Spl1b-Help.svg", {
-        x: 86.86000000000001,
-        y: 17.629999999999995,
-      }),
-      new Costume("Splash-2b", "./StageSprite/costumes/Splash-2b.png", {
-        x: 480,
-        y: 360,
+      new Costume("Splash-2b", "./StageSprite/costumes/Splash-2b.svg", {
+        x: 265.54001,
+        y: 188.28501139999995,
       }),
       new Costume("Wait - World", "./StageSprite/costumes/Wait - World.png", {
         x: 480,
@@ -76,10 +67,14 @@ export default class StageSprite extends Sprite {
         x: 480,
         y: 360,
       }),
-      new Costume("Pause", "./StageSprite/costumes/Pause.png", {
-        x: 480,
-        y: 360,
+      new Costume("Pause", "./StageSprite/costumes/Pause.svg", {
+        x: 265.54001,
+        y: 188.28501139999995,
       }),
+      new Costume("Splash2B-Scroll", "./StageSprite/costumes/Splash2B-Scroll.png", {
+        x: 480,
+        y: 255,
+      })
     ];
 
     this.sounds = [new Sound("meow", "./StageSprite/sounds/meow.wav")];
@@ -127,20 +122,11 @@ export default class StageSprite extends Sprite {
       yield;
     }
     this.stage.vars.Explode = [];
-    this.costume = "YouTube";
-    this.goto(159, 30);
+    this.costume = "Spl1b-New Game";
+    this.goto(-114, 0);
     this.createClone();
     this.costumeNumber++;
-    this.goto(-114, 25);
-    this.createClone();
-    this.costumeNumber++;
-    this.y -= 40;
-    this.createClone();
-    this.costumeNumber++;
-    this.y -= 40;
-    this.createClone();
-    this.costumeNumber++;
-    this.y -= 50;
+    this.y -= 70;
     this.createClone();
     this.costume = "Splash-1b";
     this.goto(0, 0);
@@ -161,6 +147,11 @@ export default class StageSprite extends Sprite {
       "Spl1b-New Game"
     ) {
       this.stage.vars.Explode = [];
+      let oldY = this.y;
+      this.y = -306;
+      this.costume = "Splash2B-Scroll";
+      this.createClone();
+      this.y = oldY;
       this.costume = "Splash-2b";
       this.broadcast("world options");
       return;
@@ -182,24 +173,6 @@ export default class StageSprite extends Sprite {
       this.stage.vars.Survival = 0;
       this.broadcast("load example");
       return;
-    }
-    if (
-      this.toString(this.itemOf(this.stage.vars.Explode, 0)) === "Spl1b-Help"
-    ) {
-      this.stage.vars.Explode = [];
-      this.costume = "Splash-2b";
-      this.broadcast("help screen");
-      while (!this.mouse.down) {
-        yield;
-      }
-      this.stage.vars.X = this.mouse.x;
-      this.stage.vars.Y = this.mouse.y;
-      while (!!this.mouse.down) {
-        yield;
-      }
-      this.broadcast("close help");
-      this.costume = "Splash-1b";
-      this.broadcast("splash1");
     }
   }
 
@@ -242,15 +215,15 @@ export default class StageSprite extends Sprite {
     this.costume = "Wait - Flowing";
     yield* this.broadcastAndWait("bring to life");
     this.costume = "Wait - Cloning";
-    yield* this.wait(0.1);
+    yield* this.wait(0);
     yield* this.broadcastAndWait("init1b");
-    yield* this.wait(0.1);
+    yield* this.wait(0);
     yield* this.broadcastAndWait("init2");
-    yield* this.wait(0.1);
+    yield* this.wait(0);
     yield* this.broadcastAndWait("init3");
-    yield* this.wait(0.1);
+    yield* this.wait(0);
     yield* this.broadcastAndWait("switch mode");
-    yield* this.wait(0.1);
+    yield* this.wait(0);
     this.costume = "backdrop1";
     this.visible = false;
     this.broadcast("go");
@@ -331,10 +304,6 @@ export default class StageSprite extends Sprite {
     this.stage.vars.Lighting = 1;
     this.stage.vars.Locked = "";
     this.stage.vars.Maxharvest = 10;
-    if (/* no username */ "" === "griffpatch") {
-      this.stage.vars.Sound = 1;
-      this.stage.vars.Keydelaytrick = 0;
-    }
     this.effects.clear();
     yield* this.setup();
     this.broadcast("splash1");
@@ -346,7 +315,7 @@ export default class StageSprite extends Sprite {
     this.visible = true;
     this.moveAhead();
     for (let i = 0; i < 10; i++) {
-      this.effects.ghost -= 8;
+      this.effects.ghost -= 10;
       yield;
     }
     while (!!this.keyPressed("p")) {
@@ -359,7 +328,7 @@ export default class StageSprite extends Sprite {
       yield;
     }
     for (let i = 0; i < 10; i++) {
-      this.effects.ghost += 8;
+      this.effects.ghost += 10;
       yield;
     }
     this.visible = false;
@@ -368,6 +337,17 @@ export default class StageSprite extends Sprite {
   }
 
   *startAsClone() {
+    if (this.costume.name === "Splash2B-Scroll") {
+      while (true) {
+        let percentThrough = 1 - ((-this.y) / 306);
+        if (percentThrough > 0.999) {
+          this.y = 0;
+          return;
+        }
+        this.y += ((1 - percentThrough) * 306) / 10;
+        yield* this.wait(0.025);
+      }
+    }
     this.size = 70;
     this.moveAhead(5);
     while (true) {

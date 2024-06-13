@@ -159,7 +159,7 @@ export default class SmeltProgress extends Sprite {
 
   *whenIReceiveAnimate() {
     if (this.toString(this.stage.vars.Mode) === "f") {
-      yield* this.doBurn();
+      this.runWithoutScreenFrefresh(this.doBurn());
     } else {
       null;
     }

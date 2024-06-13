@@ -453,7 +453,7 @@ export default class SaveGame extends Sprite {
     while (!!this.keyPressed("o")) {
       yield;
     }
-    yield* this.saveGame();
+    this.runWithoutScreenRrefresh(this.saveGame());
     this.costume = "Saved";
     while (!this.keyPressed("o")) {
       yield;
@@ -506,7 +506,7 @@ export default class SaveGame extends Sprite {
     this.vars.counts = [];
     for (
       let i = 0;
-      i < this.vars.undefined.length / this.toNumber(this.stage.vars.Dmul);
+      i < this.stage.vars.BlockData.length / this.toNumber(this.stage.vars.Dmul);
       i++
     ) {
       this.vars.counts.push(0);
@@ -798,11 +798,11 @@ export default class SaveGame extends Sprite {
   }
 
   *whenIReceiveSaveChunk() {
-    yield* this.saveLevelChunk();
+    this.runWithoutScreenRefresh(this.saveLevelChunk());
   }
 
   *whenIReceiveLoadChunk() {
-    yield* this.restoreLevelChunk();
+    this.runWithoutScreenRefresh(this.restoreLevelChunk());
   }
 
   *restoreLevelChunk() {
@@ -1095,7 +1095,7 @@ export default class SaveGame extends Sprite {
   }
 
   *whenIReceiveLoadExample() {
-    yield* this.loadGame(!null);
+    this.runWithoutScreenRefresh(this.loadGame(!null));
   }
 
   *whenKeyMPressed() {}
@@ -1566,7 +1566,7 @@ export default class SaveGame extends Sprite {
         if (
           this.compare(
             this.itemOf(
-              this.vars.undefined,
+              this.stage.vars.BlockData,
               this.toNumber(this.vars.sgTile) *
                 this.toNumber(this.stage.vars.Dmul) +
                 8
@@ -1579,7 +1579,7 @@ export default class SaveGame extends Sprite {
           );
         }
         this.vars.sgTile = this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(this.vars.sgTile) *
             this.toNumber(this.stage.vars.Dmul) +
             19

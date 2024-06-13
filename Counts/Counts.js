@@ -198,7 +198,7 @@ export default class Counts extends Sprite {
       } else {
         if (!(this.compare(this.vars.tCo, this.vars.count) === 0)) {
           this.visible = false;
-          this.costume = this.vars.tCo;
+          this.costume = this.text(String(this.vars.tCo), 32);
           this.vars.count = this.vars.tCo;
         }
         this.vars.tCo = this.itemOf(
@@ -238,9 +238,9 @@ export default class Counts extends Sprite {
   }
 
   *whenIReceiveAnimate() {
-    yield* this.update(
+    this.runWithoutScreenRefresh(this.update(
       this.itemOf(this.stage.vars.Invpos, this.toNumber(this.vars.iCo) * 3 - 3)
-    );
+    ));
   }
 
   *whenIReceiveInit1b() {
@@ -249,7 +249,7 @@ export default class Counts extends Sprite {
 
   *getdurabilityof(tileid) {
     this.vars.tCo = this.itemOf(
-      this.vars.undefined,
+      this.stage.vars.BlockData,
       this.toNumber(tileid) * this.toNumber(this.stage.vars.Dmul) + 17
     );
   }

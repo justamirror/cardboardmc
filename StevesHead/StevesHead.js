@@ -115,6 +115,15 @@ export default class StevesHead extends Sprite {
     this.vars.light = -1;
     this.vars.endspeak = 0;
     this.vars.offset = 0;
+    this.vars.BobY = [
+       0,
+       4,
+       6,
+       7,
+       6,
+       4,
+       0
+    ]
   }
 
   *positionshowexactSh(x, y) {
@@ -145,7 +154,7 @@ export default class StevesHead extends Sprite {
         this.vars.offset = 8;
       } else {
         this.vars.offset = this.itemOf(
-          this.vars.undefined,
+          this.stage.vars.BlockData,
           this.toNumber(this.vars.offset) *
             this.toNumber(this.stage.vars.Dmul) +
             15
@@ -176,7 +185,7 @@ export default class StevesHead extends Sprite {
             1.5 +
             0.39 +
             this.toNumber(
-              this.itemOf(this.vars.undefined, this.stage.vars.Walkframe - 1)
+              this.itemOf(this.vars.BobY, this.stage.vars.Walkframe - 1)
             ) /
               90
         );

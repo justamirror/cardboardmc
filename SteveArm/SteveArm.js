@@ -86,7 +86,7 @@ export default class SteveArm extends Sprite {
 
   *whenIReceiveAnimate() {
     if (this.compare(this.stage.vars.HealthS, 0) > 0) {
-      yield* this.saPosition(this.stage.vars.X, this.stage.vars.Y);
+      this.runWithoutScreenRefresh(this.saPosition(this.stage.vars.X, this.stage.vars.Y));
     } else {
       this.visible = false;
     }
@@ -159,7 +159,7 @@ export default class SteveArm extends Sprite {
         1 +
         this.toNumber(
           this.itemOf(
-            this.vars.undefined,
+            this.stage.vars.BlockData,
             this.toNumber(this.vars.offset) *
               this.toNumber(this.stage.vars.Dmul) +
               15

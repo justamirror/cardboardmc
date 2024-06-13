@@ -184,7 +184,7 @@ export default class PseudorandomCycle extends Sprite {
   }
 
   *whenIReceiveFillRandom() {
-    yield* this.fillRandom(this.stage.vars.Randomseed);
+    this.runWithoutScreenRefresh(this.fillRandom(this.stage.vars.Randomseed));
     this.stage.vars.Randomseed = 0;
   }
 

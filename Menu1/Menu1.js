@@ -14,10 +14,6 @@ export default class Menu1 extends Sprite {
     super(...args);
 
     this.costumes = [
-      new Costume("Help Text", "./Menu1/costumes/Help Text.svg", {
-        x: 200,
-        y: 36,
-      }),
       new Costume("World-Options", "./Menu1/costumes/World-Options.png", {
         x: 374,
         y: 62,
@@ -32,11 +28,6 @@ export default class Menu1 extends Sprite {
     this.sounds = [new Sound("meow", "./Menu1/sounds/meow.wav")];
 
     this.triggers = [
-      new Trigger(
-        Trigger.BROADCAST,
-        { name: "help screen" },
-        this.whenIReceiveHelpScreen
-      ),
       new Trigger(
         Trigger.BROADCAST,
         { name: "world options" },
@@ -59,11 +50,6 @@ export default class Menu1 extends Sprite {
       ),
       new Trigger(Trigger.CLONE_START, this.startAsClone),
     ];
-  }
-
-  *whenIReceiveHelpScreen() {
-    this.costume = "Help Text";
-    this.visible = true;
   }
 
   *whenIReceiveWorldOptions() {
